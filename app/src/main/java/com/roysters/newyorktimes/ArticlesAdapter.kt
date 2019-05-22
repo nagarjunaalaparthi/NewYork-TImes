@@ -10,7 +10,7 @@ class ArticlesAdapter(private val completion: ((ResultsItem) -> Unit)?): Recycle
 
     var articles = ArrayList<ResultsItem>(0)
 
-    public fun addData(list: ArrayList<ResultsItem>) {
+    fun addData(list: ArrayList<ResultsItem>) {
         this.articles = list
         notifyDataSetChanged()
     }

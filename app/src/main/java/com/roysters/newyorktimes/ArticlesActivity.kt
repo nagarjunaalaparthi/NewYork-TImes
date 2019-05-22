@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager
@@ -53,22 +54,24 @@ class ArticlesActivity : AppCompatActivity() {
     private fun getArticlesData() {
         if (isNetworkAvailable(this)) {
             refreshLayout.isRefreshing = true
-            recyclerView.visibility = View.GONE
+            recyclerView.adapter = null
             articlesViewModel.getArticles(listingType).observe(this,
                 Observer {
-                    refreshLayout.isRefreshing = false
-                    it?.let { response ->
-                        if (!response.errorMessage.isNullOrEmpty()) {
-                            showAlert(
-                                this@ArticlesActivity,
-                                getString(R.string.error_message),
-                                getString(R.string.ok_title)
-                            )
-                        } else {
-                            recyclerView.visibility = View.VISIBLE
-                            articlesAdapter.addData(response.results as ArrayList<ResultsItem>)
+                    Handler().postDelayed({
+                        refreshLayout.isRefreshing = false
+                        it?.let { response ->
+                            if (!response.errorMessage.isNullOrEmpty()) {
+                                showAlert(
+                                    this@ArticlesActivity,
+                                    getString(R.string.error_message),
+                                    getString(R.string.ok_title)
+                                )
+                            } else {
+                                recyclerView.adapter = articlesAdapter
+                                articlesAdapter.addData(response.results as ArrayList<ResultsItem>)
+                            }
                         }
-                    }
+                    }, 1000)
                 })
         } else {
             showAlert(

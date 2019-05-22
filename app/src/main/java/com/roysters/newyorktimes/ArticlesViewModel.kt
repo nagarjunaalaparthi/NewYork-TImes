@@ -12,10 +12,11 @@ import java.io.IOException
 
 class ArticlesViewModel: ViewModel() {
 
-    val articleData = MutableLiveData<ArticleResponse?>()
+    private lateinit var articleData: MutableLiveData<ArticleResponse?>
 
     fun getArticles(listingType: ArticlesListingType): MutableLiveData<ArticleResponse?> {
-        val url = "https://api.nytimes.com/svc/mostpopular/v2/emailed/${listingType.value}.json?api-key=PPSm1diek651l32WczamwzPwixhF5ilT"
+        articleData = MutableLiveData()
+        val url = "https://api.nytimes.com/svc/mostpopular/v2/emailed/${listingType.value}.json?api-key=${BuildConfig.API_KEY}"
         Log.i("UrlIs", url)
         OkHttpRequest().get(url, object : Callback {
             override fun onFailure(call: Call, e: IOException) {
