@@ -5,4 +5,5 @@
     <string name="action_last_month">Last Month</string>
     <string name="error_message">Something went wrong, Please try again.</string>
     <string name="ok_title">Ok</string>
+    <string name="network_error_message">No Interner Available</string>
 </resources>

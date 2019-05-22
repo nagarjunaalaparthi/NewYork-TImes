@@ -3,6 +3,8 @@ package com.roysters.newyorktimes
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.roysters.newyorktimes.utilis.Constant
+import com.roysters.newyorktimes.utilis.isNetworkAvailable
+import com.roysters.newyorktimes.utilis.showAlert
 import kotlinx.android.synthetic.main.activity_preview.*
 
 class ArticlePreviewActivity : AppCompatActivity() {
@@ -23,8 +25,17 @@ class ArticlePreviewActivity : AppCompatActivity() {
 
     private fun loadWeb() {
         webView.settings.javaScriptEnabled = true
-        webView?.apply {
-            loadUrl(intent.extras.getString(Constant.URL))
+        if (isNetworkAvailable(this)) {
+            webView?.apply {
+                loadUrl(intent.extras.getString(Constant.URL))
+            }
+
+        } else {
+            showAlert(
+                this,
+                getString(R.string.network_error_message),
+                getString(R.string.ok_title)
+            )
         }
     }
 

@@ -12,6 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.roysters.newyorktimes.utilis.Constant
+import com.roysters.newyorktimes.utilis.isNetworkAvailable
 import com.roysters.newyorktimes.utilis.showAlert
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -50,24 +51,32 @@ class ArticlesActivity : AppCompatActivity() {
     }
 
     private fun getArticlesData() {
-        refreshLayout.isRefreshing = true
-        recyclerView.visibility = View.GONE
-        articlesViewModel.getArticles(listingType).observe(this,
-            Observer {
-                refreshLayout.isRefreshing = false
-                it?.let { response ->
-                    if (!response.errorMessage.isNullOrEmpty()) {
-                        showAlert(
-                            this@ArticlesActivity,
-                            getString(R.string.error_message),
-                            getString(R.string.ok_title)
-                        )
-                    } else {
-                        recyclerView.visibility = View.VISIBLE
-                        articlesAdapter.addData(response.results as ArrayList<ResultsItem>)
+        if (isNetworkAvailable(this)) {
+            refreshLayout.isRefreshing = true
+            recyclerView.visibility = View.GONE
+            articlesViewModel.getArticles(listingType).observe(this,
+                Observer {
+                    refreshLayout.isRefreshing = false
+                    it?.let { response ->
+                        if (!response.errorMessage.isNullOrEmpty()) {
+                            showAlert(
+                                this@ArticlesActivity,
+                                getString(R.string.error_message),
+                                getString(R.string.ok_title)
+                            )
+                        } else {
+                            recyclerView.visibility = View.VISIBLE
+                            articlesAdapter.addData(response.results as ArrayList<ResultsItem>)
+                        }
                     }
-                }
-            })
+                })
+        } else {
+            showAlert(
+                this@ArticlesActivity,
+                getString(R.string.network_error_message),
+                getString(R.string.ok_title)
+            )
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
