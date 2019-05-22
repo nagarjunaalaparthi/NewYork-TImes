@@ -70,6 +70,9 @@
                     android:lines="1"
                     android:text="@{article.publishedDate}"
                     android:ellipsize="end"
+                    android:drawablePadding="@dimen/dimen_4"
+                    android:gravity="center_vertical"
+                    android:drawableStart="@drawable/ic_date"
                     android:fontFamily="sans-serif-condensed"
                     tools:text="Hey There"/>
 
