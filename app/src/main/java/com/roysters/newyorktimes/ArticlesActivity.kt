@@ -2,6 +2,7 @@ package com.roysters.newyorktimes
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.roysters.newyorktimes.utilis.Constant
 import com.roysters.newyorktimes.utilis.showAlert
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -37,7 +39,12 @@ class ArticlesActivity : AppCompatActivity() {
     }
 
     private fun setUpRecyclerView() {
-        articlesAdapter = ArticlesAdapter()
+        articlesAdapter = ArticlesAdapter {
+            val intent = Intent(this, ArticlePreviewActivity::class.java)
+            intent.putExtra(Constant.TITLE, it.title)
+            intent.putExtra(Constant.URL, it.url)
+            startActivity(intent)
+        }
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = articlesAdapter
     }

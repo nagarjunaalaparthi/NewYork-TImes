@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.roysters.newyorktimes.databinding.NewsItemBinding
 
-class ArticlesAdapter: RecyclerView.Adapter<ArticleViewHolder>() {
+class ArticlesAdapter(private val completion: ((ResultsItem) -> Unit)?): RecyclerView.Adapter<ArticleViewHolder>() {
 
     var articles = ArrayList<ResultsItem>(0)
 
@@ -31,11 +31,15 @@ class ArticlesAdapter: RecyclerView.Adapter<ArticleViewHolder>() {
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         holder.bindData(articles[position])
+        holder.itemView.setOnClickListener {
+            completion?.invoke(articles[holder.adapterPosition])
+        }
     }
 }
 
 class ArticleViewHolder(private val itemBinding: NewsItemBinding): RecyclerView.ViewHolder(itemBinding.root) {
     fun bindData(article: ResultsItem) {
         itemBinding.article = article
+
     }
 }

@@ -14,6 +14,7 @@
             app:cardCornerRadius="@dimen/dimen_8"
             app:cardElevation="@dimen/dimen_8"
             android:layout_margin="@dimen/dimen_8"
+            android:foreground="?android:attr/selectableItemBackground"
             android:layout_height="wrap_content">
         <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"

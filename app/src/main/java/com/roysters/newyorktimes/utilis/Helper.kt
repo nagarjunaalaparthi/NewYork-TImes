@@ -2,8 +2,10 @@ package com.roysters.newyorktimes.utilis
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.databinding.BindingAdapter
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.widget.ImageView
 import com.roysters.newyorktimes.R
@@ -43,4 +45,10 @@ fun loadAlbumImage(view: ImageView, newImageUrl: String?) {
     Picasso.get().load(newImageUrl).into(view)
 
     ResultsItem().media?.get(0)?.mediaMetadata?.get(2)?.url
+}
+
+fun isNetworkAvailable(context: Context?): Boolean {
+    val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val activeNetworkInfo = connectivityManager.activeNetworkInfo
+    return activeNetworkInfo != null && activeNetworkInfo.isConnected
 }
